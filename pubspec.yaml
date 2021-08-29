@@ -7,10 +7,10 @@ environment:
   sdk: '>=2.9.0 <3.0.0'
 
 dependencies:
-  nyxx: ^1.1.0-dev
-  nyxx_commander: ^1.1.0-dev
+  nyxx: 2.0.0-rc.12
+  nyxx_commander: any
   nyxx_interactions: any
-  dart_dice_parser: any
+  d20: any
   toml: any
   cron: any
 #   path: ^1.8.0
