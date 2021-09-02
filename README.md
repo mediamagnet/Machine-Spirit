@@ -12,4 +12,5 @@ current features:
 
 ### TODO:
 - Add rolling for other `d66` tables
+- Clearer marking of wrath die.
 - Add searching of the Doctors of Doom page for quick reference like dash-delta does for 5e and Pathfinder.
