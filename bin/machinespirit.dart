@@ -46,7 +46,8 @@ Future main(List<String> arguments) async {
       ..registerSubCommand('shutdown', shutdownCommand))
     ..registerCommand('ping', pingCommand)
     ..registerCommand('info', infoCommand)
-    ..registerCommand('roll', diceCommand);
+    ..registerCommand('roll', diceCommand)
+    ..registerCommand('crit', critCommand);
   } catch (e){
     print(e);
   }
