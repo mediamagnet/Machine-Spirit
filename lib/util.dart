@@ -48,7 +48,7 @@ Future<void> infoCommand(CommandContext ctx, String content) async {
     })
     ..addFooter((footer) {
       footer.text =
-      'Nyxx 1.1.0-dev | Shard [${ctx.shardId + 1}] of [${ctx.client.shards}] | ${utils.dartVersion}';
+      'Machine Spirit v.1.0.1 Farsight | Shard [${ctx.shardId + 1}] of [${ctx.client.shards}] | ${utils.dartVersion}';
     })
     ..color = color
     ..addField(

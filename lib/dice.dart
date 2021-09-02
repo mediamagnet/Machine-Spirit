@@ -7,14 +7,12 @@ import 'package:d20/d20.dart';
 
 
 Future<void> diceCommand(CommandContext ctx, String content) async {
-  var total_dice = List.empty(growable: true);
-  var wrath_total = List.empty(growable: true);
-  var tot_success;
+  var total_dice = List.empty(growable: true); // total rolled dice
+  var tot_success; // total number of successes from your roll
   final d20 = D20();
   var cfg = await loadConfig('config.toml');
-  var cont = content.replaceAll('${cfg['Bot']['Prefix']}roll ', '').split(' ');
-  var rolled;
-  var wroll;
+  var cont = content.replaceAll('${cfg['Bot']['Prefix']}roll ', '').split(' '); // message content
+  var rolled; // dice rolls
   final random = Random();
   final color = DiscordColor.fromRgb(
       random.nextInt(255), random.nextInt(255), random.nextInt(255));
@@ -41,13 +39,9 @@ Future<void> diceCommand(CommandContext ctx, String content) async {
       tot_success = (explode['4'] ?? 0) + (explode['5'] ?? 0) + sixes;
     }
 
-    tot_success ??= 0;
+    tot_success ??= 0; // Assign 0 if null
 
 
-    // total_dice = total_dice.
-    /*var blah = MessageBuilder.content(
-        total_dice.toString() + ' Total Successes: ' + tot_success.toString() +
-            ' Wrath: ' + wrath_total.toString());*/
     final embed  = EmbedBuilder()
     ..color = color
     ..addAuthor((author) {
@@ -56,7 +50,7 @@ Future<void> diceCommand(CommandContext ctx, String content) async {
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';})
     ..addFooter((footer) {
       footer.text =
-      'Machine Spirit v1.0.0 - Farsight ';})
+      'Machine Spirit v1.0.1 - Farsight ';})
     ..thumbnailUrl = ctx.client.self.avatarURL()
     ..addField(
       name: 'Rolls:',
@@ -150,7 +144,7 @@ Future<void> critCommand(CommandContext ctx, String content) async {
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';})
     ..addFooter((footer) {
       footer.text =
-      'Machine Spirit v1.0.0 - Farsight ';})
+      'Machine Spirit v1.0.1 - Farsight ';})
     ..thumbnailUrl = ctx.client.self.avatarURL()
     ..addField(
         name: 'Critical:',
