@@ -171,6 +171,7 @@ Future<void> critCommand(CommandContext ctx, String content) async {
   await ctx.sendMessage(MessageBuilder.embed(embed));
 }
 
+// TODO: Modify so that above 66 is only rolled when extra wrath dice used.
 Future<void> warpCommand(CommandContext ctx, String content) async {
   final d20 = D20();
   var rolled;

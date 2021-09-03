@@ -7,7 +7,8 @@ String get dartVersion {
   return platformVersion.split('(').first;
 }
 
-Future<String> helpCommandGen(String commandName, String description, {String additionalInfo}) async {
+Future<String> helpCommandGen(String commandName, String description,
+    {required String additionalInfo}) async {
   var cfg = await loadConfig('config.toml');
   final buffer = StringBuffer();
 
