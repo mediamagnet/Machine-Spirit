@@ -7,13 +7,11 @@ String get dartVersion {
   return platformVersion.split('(').first;
 }
 
-String helpCommandGen(String commandName, String description,
-    {String additionalInfo}) {
-  FilesystemConfigLoader.use();
+Future<String> helpCommandGen(String commandName, String description, {String additionalInfo}) async {
+  var cfg = await loadConfig('config.toml');
   final buffer = StringBuffer();
-  var cfg;
 
-  buffer.write('**${cfg['Bot']['Prefix']}${commandName}**');
+  buffer.write("${cfg['Bot']['Prefix']}commandName**");
 
   if (additionalInfo != null) {
     buffer.write(' `$additionalInfo`');

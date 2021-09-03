@@ -51,7 +51,8 @@ Future main(List<String> arguments) async {
       ..registerCommand('info', infoCommand)
       ..registerCommand('roll', diceCommand)
       ..registerCommand('crit', critCommand)
-      ..registerCommand('warp', warpCommand);
+      ..registerCommand('warp', warpCommand)
+      ..registerCommand('help', helpCommand);
   } catch (e) {
     print(e);
   }

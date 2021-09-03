@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commander/commander.dart';
+import 'package:toml/loader.dart';
 import 'package:machinespirit/utils.dart' as utils;
 
 Future<void> pingCommand(CommandContext ctx, String content) async {
@@ -84,4 +85,32 @@ Future<void> infoCommand(CommandContext ctx, String content) async {
         inline: true);
   await ctx.message.delete();
   await ctx.sendMessage(MessageBuilder.embed(embed));
+}
+
+Future<void> helpCommand(CommandContext ctx, String content) async {
+  var cfg = await loadConfig('config.toml');
+  final color = DiscordColor.fromRgb(
+      Random().nextInt(255), Random().nextInt(255), Random().nextInt(255));
+  final embed = EmbedBuilder()
+    ..addAuthor((author) {
+      author.name = ctx.client.self.tag;
+      author.iconUrl = ctx.client.self.avatarURL();
+      author.url = 'https://github.com/mediamagnet/Machine-Spirit';
+    })
+    ..addFooter((footer) {
+      footer.text =
+      'Machine Spirit v.1.0.1 Farsight';
+    })
+    ..color = color
+    ..addField(name: 'prefix', content: 'My current prefix is `${cfg['Bot']['Prefix']}`')
+    ..addField(name: '${cfg['Bot']['Prefix']}roll', content: 'Roll the specified amount of dice, up to 50', inline: false)
+    ..addField(name: '${cfg['Bot']['Prefix']}crit', content: 'Roll for a critical effect', inline: false)
+    ..addField(name: '${cfg['Bot']['Prefix']}warp', content: 'Roll for a warp effect, currently rolls the full d106', inline: false)
+    ..addField(name: '${cfg['Bot']['Prefix']}info', content: 'sends info about the bot', inline: false)
+    ..addField(name: '${cfg['Bot']['Prefix']}ping', content: 'Sends current bot latency', inline: false)
+    ..addField(name: '${cfg['Bot']['Prefix']}help', content: "You're reading it.", inline: false)
+    ..addField(name: '${cfg['Bot']['Prefix']}shutdown', content: 'Shuts the bot down', inline: false);
+  await ctx.message.delete();
+  await ctx.sendMessage(MessageBuilder.embed(embed));
+
 }
