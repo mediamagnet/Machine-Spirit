@@ -163,7 +163,7 @@ Future<void> critCommand(CommandContext ctx, String content) async {
   var blah2 = await ctx.sendMessage(MessageBuilder.embed(embed));
 }
 
-Future<void> warpCommand(CommandContext ctx, String content) {
+Future<void> warpCommand(CommandContext ctx, String content) async {
   final d20 = D20();
   var rolled;
   final random = Random();
