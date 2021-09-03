@@ -247,5 +247,7 @@ Future<void> warpCommand(CommandContext ctx, String content) async {
         name: 'Perils of the Warp:',
         content: warp,
         inline: false);
+  
+  var blah2 = await ctx.sendMessage(MessageBuilder.embed(embed));
 
-}
+  }
