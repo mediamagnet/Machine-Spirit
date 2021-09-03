@@ -1,8 +1,9 @@
 import 'package:nyxx/nyxx.dart';
-import 'package:nyxx_commander/commander.dart' show CommandContext, CommandGroup, Commander;
+import 'package:nyxx_commander/commander.dart'
+    show CommandContext, CommandGroup, Commander;
 import 'package:toml/loader/fs.dart';
 import 'dart:async';
-import 'package:cron/cron.dart';
+// import 'package:cron/cron.dart';
 import 'package:machinespirit/admin.dart';
 import 'package:machinespirit/util.dart';
 import 'package:machinespirit/dice.dart';
@@ -13,7 +14,7 @@ var prefix;
 var botID;
 
 Future main(List<String> arguments) async {
-  final cron = Cron();
+  // final cron = Cron();
   FilesystemConfigLoader.use();
   var cfg;
   try {
@@ -31,25 +32,27 @@ Future main(List<String> arguments) async {
         type: ActivityType.game,
         url: 'https://github.com/mediamagnet/Machine-Spirit')
       ));*/
-      bot.setPresence(PresenceBuilder.of(status: UserStatus.online,
-          activity: ActivityBuilder('with the Exterminatus Button', ActivityType.game)));
-      
+      bot.setPresence(PresenceBuilder.of(
+          status: UserStatus.online,
+          activity: ActivityBuilder(
+              'with the Exterminatus Button', ActivityType.game)));
+
       bot.onMessageReceived.listen((MessageReceivedEvent e) {
         if (e.message.content.contains(botID)) {
           e.message.createReaction(UnicodeEmoji('🤯'));
         }
       });
     });
-    
+
     Commander(bot, prefix: prefix)
-    ..registerCommandGroup(CommandGroup(beforeHandler: checkForAdmin)
-      ..registerSubCommand('shutdown', shutdownCommand))
-    ..registerCommand('ping', pingCommand)
-    ..registerCommand('info', infoCommand)
-    ..registerCommand('roll', diceCommand)
-    ..registerCommand('crit', critCommand)
-    ..registerCommand('warp', warpCommand);
-  } catch (e){
+      ..registerCommandGroup(CommandGroup(beforeHandler: checkForAdmin)
+        ..registerSubCommand('shutdown', shutdownCommand))
+      ..registerCommand('ping', pingCommand)
+      ..registerCommand('info', infoCommand)
+      ..registerCommand('roll', diceCommand)
+      ..registerCommand('crit', critCommand)
+      ..registerCommand('warp', warpCommand);
+  } catch (e) {
     print(e);
   }
   return cfg;
@@ -62,4 +65,3 @@ Future<bool> checkForAdmin(CommandContext context) async {
 
   return false;
 }
-

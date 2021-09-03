@@ -27,11 +27,10 @@ Future<void> pingCommand(CommandContext ctx, String content) async {
 
   final message = await ctx.sendMessage(MessageBuilder.embed(embed));
 
-  embed
-    .replaceField(
-        name: 'Message roundup time',
-        content: '${stopwatch.elapsedMilliseconds} ms',
-        inline: true);
+  embed.replaceField(
+      name: 'Message roundup time',
+      content: '${stopwatch.elapsedMilliseconds} ms',
+      inline: true);
 
   await message.edit(MessageBuilder.embed(embed));
 }
@@ -48,7 +47,7 @@ Future<void> infoCommand(CommandContext ctx, String content) async {
     })
     ..addFooter((footer) {
       footer.text =
-      'Machine Spirit v.1.0.1 Farsight | Shard [${ctx.shardId + 1}] of [${ctx.client.shards}] | ${utils.dartVersion}';
+          'Machine Spirit v.1.0.1 Farsight | Shard [${ctx.shardId + 1}] of [${ctx.client.shards}] | ${utils.dartVersion}';
     })
     ..color = color
     ..addField(
@@ -56,7 +55,7 @@ Future<void> infoCommand(CommandContext ctx, String content) async {
     ..addField(
         name: 'DartVM memory usage',
         content:
-        '${(ProcessInfo.currentRss / 1024 / 1024).toStringAsFixed(2)} MB',
+            '${(ProcessInfo.currentRss / 1024 / 1024).toStringAsFixed(2)} MB',
         inline: true)
     ..addField(
         name: 'Created at', content: ctx.client.app.createdAt, inline: true)

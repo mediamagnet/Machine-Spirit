@@ -58,8 +58,7 @@ Future<void> diceCommand(CommandContext ctx, String content) async {
           inline: false)
       ..addField(
           name: 'Successes:', content: tot_success.toString(), inline: true);
-
-    var blah2 = await ctx.sendMessage(MessageBuilder.embed(embed));
+    await ctx.sendMessage(MessageBuilder.embed(embed));
   }
 }
 
@@ -169,7 +168,7 @@ Future<void> critCommand(CommandContext ctx, String content) async {
     ..addField(name: 'Effect:', content: effect, inline: false)
     ..addField(name: 'Glory', content: glory, inline: false);
 
-  var blah2 = await ctx.sendMessage(MessageBuilder.embed(embed));
+  await ctx.sendMessage(MessageBuilder.embed(embed));
 }
 
 Future<void> warpCommand(CommandContext ctx, String content) async {
@@ -285,7 +284,9 @@ Future<void> warpCommand(CommandContext ctx, String content) async {
       footer.text = 'Machine Spirit v1.0.0 - Farsight ';
     })
     ..thumbnailUrl = ctx.client.self.avatarURL()
+    ..addField(
+        name: 'Rolled value:', content: rolled.finalResult, inline: false)
     ..addField(name: 'Perils of the Warp:', content: warp, inline: false);
 
-  var blah2 = await ctx.sendMessage(MessageBuilder.embed(embed));
+  await ctx.sendMessage(MessageBuilder.embed(embed));
 }
