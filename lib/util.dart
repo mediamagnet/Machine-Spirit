@@ -114,7 +114,7 @@ Future<void> helpCommand(CommandContext ctx, String content) async {
         inline: false)
     ..addField(
         name: '${cfg['Bot']['Prefix']}warp',
-        content: 'Roll for a warp effect, currently rolls the full d106',
+        content: 'Roll for a warp effect, add 1-4 for each additional 1 rolled in the warp check.',
         inline: false)
     ..addField(
         name: '${cfg['Bot']['Prefix']}info',
