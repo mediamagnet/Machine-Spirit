@@ -1,3 +1,4 @@
+import 'package:mongo_dart/mongo_dart.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commander/commander.dart'
     show CommandContext, CommandGroup, Commander;
@@ -16,12 +17,22 @@ var botID;
 Future main(List<String> arguments) async {
   // final cron = Cron();
   FilesystemConfigLoader.use();
+
+
+
   var cfg;
   try {
     cfg = await loadConfig('config.toml');
     ownerID = cfg['Owner']['ID'];
     prefix = cfg['Bot']['Prefix'];
     botID = cfg['Bot']['ID'];
+
+    var db = await Db.create('mongodb+srv://${cfg['DB']['User']}:${cfg['DB']['Pass']}@gemini.hjehy.mongodb.net/gemini?retryWrites=true&w=majority');
+    await db.open();
+
+    var coll = db.collection('machine_spirit');
+
+
 
     final bot = Nyxx(cfg['Bot']['Token'], GatewayIntents.all);
 
@@ -44,6 +55,8 @@ Future main(List<String> arguments) async {
       });
     });
 
+
+
     Commander(bot, prefix: prefix)
       ..registerCommandGroup(CommandGroup(beforeHandler: checkForAdmin)
         ..registerSubCommand('shutdown', shutdownCommand))
@@ -52,7 +65,8 @@ Future main(List<String> arguments) async {
       ..registerCommand('roll', diceCommand)
       ..registerCommand('crit', critCommand)
       ..registerCommand('warp', warpCommand)
-      ..registerCommand('help', helpCommand);
+      ..registerCommand('help', helpCommand)
+      ..registerCommand('prefix', prefixCommand);
   } catch (e) {
     print(e);
   }
