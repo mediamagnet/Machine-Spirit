@@ -23,7 +23,7 @@ Future<void> diceCommand(CommandContext ctx, String content) async {
   } else {
     for (var i = 1; i <= int.parse(cont[0]); i++) {
       rolled = d20.rollWithStatistics('1d6');
-      total_dice.add(rolled);
+      total_dice.add(rolled.finalResult);
     }
     var explode = {};
 
