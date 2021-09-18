@@ -117,6 +117,10 @@ Future<void> helpCommand(CommandContext ctx, String content) async {
         content: 'Roll for a warp effect, add 1-4 for each additional 1 rolled in the warp check.',
         inline: false)
     ..addField(
+        name: '${cfg['Bot']['Prefix']}scatter',
+        content: 'Cause Scatter dice are fun',
+        inline: false)
+    ..addField(
         name: '${cfg['Bot']['Prefix']}info',
         content: 'sends info about the bot',
         inline: false)

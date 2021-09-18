@@ -174,7 +174,6 @@ Future<void> critCommand(CommandContext ctx, String content) async {
   await ctx.sendMessage(MessageBuilder.embed(embed));
 }
 
-// TODO: Modify so that above 66 is only rolled when extra wrath dice used.
 Future<void> warpCommand(CommandContext ctx, String content) async {
   final d20 = D20();
   var rolled;
@@ -312,11 +311,83 @@ Future<void> warpCommand(CommandContext ctx, String content) async {
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
-      footer.text = 'Machine Spirit v1.0.0 - Farsight ';
+      footer.text = 'Machine Spirit v1.0.1 - Farsight ';
     })
     ..thumbnailUrl = ctx.client.self.avatarURL()
     ..addField(name: 'Rolled value:', content: rolled, inline: false)
     ..addField(name: 'Perils of the Warp:', content: warp, inline: false);
 
   await ctx.sendMessage(MessageBuilder.embed(embed));
+}
+
+Future<void> scatterCommand(CommandContext ctx, String content) async {
+  final d20 = D20();
+  final random = Random();
+  final color = DiscordColor.fromRgb(
+      random.nextInt(255), random.nextInt(255), random.nextInt(255));
+
+  var roll1 = d20.rollWithStatistics('1d9');
+  var roll2 = d20.rollWithStatistics('1d6');
+
+  var rolled1 = scatterFace(roll1.finalResult);
+  var rolled2 = roll2.finalResult;
+  var scattered = rolled1;
+  print(scattered);
+
+  if (scattered == UnicodeEmoji('🎯')) {
+    rolled2 = 0;
+  }
+
+  final embed = EmbedBuilder()
+    ..color = color
+    ..addAuthor((author) {
+      author.name = ctx.message.author.username;
+      author.iconUrl = ctx.message.author.avatarURL();
+      author.url = 'https://github.com/mediamagnet/Machine-Spirit';
+    })
+    ..addFooter((footer) {
+      footer.text = 'Machine Spirit v1.0.1 - Farsight ';
+    })
+    ..thumbnailUrl = ctx.client.self.avatarURL()
+    ..addField(name: 'Direction', content: scattered, inline: false)
+    ..addField(name: 'Feet:', content: rolled2, inline: false);
+
+  await ctx.sendMessage(MessageBuilder.embed(embed));
+}
+
+// :arrow_down: :arrow_left: :arrow_right: :arrow_up: :arrow_upper_left: :arrow_upper_right: :arrow_lower_left: :arrow_lower_right: :dart:
+UnicodeEmoji scatterFace(int face) {
+  var newFace;
+  switch (face) {
+    case 1:
+      newFace = '⬅';
+      break;
+    case 2:
+      newFace = '➡';
+      break;
+    case 3:
+      newFace = '⬆';
+      break;
+    case 4:
+      newFace = '⬇';
+      break;
+    case 5:
+      newFace = '↖';
+      break;
+    case 6:
+      newFace = '↗';
+      break;
+    case 7:
+      newFace = '↘';
+      break;
+    case 8:
+      newFace = '↙';
+      break;
+    case 9:
+      newFace = '🎯';
+      break;
+  }
+
+  print(newFace);
+  return UnicodeEmoji(newFace);
 }

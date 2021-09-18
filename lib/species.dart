@@ -4,5 +4,5 @@ import 'package:http/http.dart';
 import 'dart:convert';
 
 Future<void> speciesCommand (CommandContext ctx, String Content) async {
-  get('https://www.doctors-of-doom.com/api/species/');
+  // get('https://www.doctors-of-doom.com/api/species/');
 }
