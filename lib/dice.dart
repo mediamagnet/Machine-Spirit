@@ -40,6 +40,8 @@ Future<void> diceCommand(CommandContext ctx, String content) async {
 
     tot_success ??= 0; // Assign 0 if null
 
+    var lastDie = total_dice.last;
+
     final embed = EmbedBuilder()
       ..color = color
       ..addAuthor((author) {
@@ -48,16 +50,19 @@ Future<void> diceCommand(CommandContext ctx, String content) async {
         author.url = 'https://github.com/mediamagnet/Machine-Spirit';
       })
       ..addFooter((footer) {
-        footer.text = 'Machine Spirit v1.0.1 - Farsight ';
+        footer.text = 'Machine Spirit v1.5.0 - Dawnhammer ';
       })
       ..thumbnailUrl = ctx.client.self.avatarURL()
       ..addField(
           name: 'Rolls:',
-          content:
-              total_dice.toString().replaceAll('[', '').replaceAll(']', ''),
+          content: total_dice.toString().replaceAll('[', '').replaceAll(']', ''),
           inline: false)
       ..addField(
-          name: 'Successes:', content: tot_success.toString(), inline: true);
+        name: 'Wrath:',
+        content: '$lastDie',
+        inline: false)
+      ..addField(
+          name: 'Successes:', content: tot_success.toString(), inline: false);
     await ctx.sendMessage(MessageBuilder.embed(embed));
   }
 }
@@ -164,7 +169,7 @@ Future<void> critCommand(CommandContext ctx, String content) async {
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
-      footer.text = 'Machine Spirit v1.0.1 - Farsight ';
+      footer.text = 'Machine Spirit v1.5.0 - Dawnhammer ';
     })
     ..thumbnailUrl = ctx.client.self.avatarURL()
     ..addField(name: 'Critical:', content: table, inline: false)
@@ -311,7 +316,7 @@ Future<void> warpCommand(CommandContext ctx, String content) async {
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
-      footer.text = 'Machine Spirit v1.0.1 - Farsight ';
+      footer.text = 'Machine Spirit v1.5.0 - Dawnhammer ';
     })
     ..thumbnailUrl = ctx.client.self.avatarURL()
     ..addField(name: 'Rolled value:', content: rolled, inline: false)
@@ -346,7 +351,7 @@ Future<void> scatterCommand(CommandContext ctx, String content) async {
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
-      footer.text = 'Machine Spirit v1.0.1 - Farsight ';
+      footer.text = 'Machine Spirit v1.5.0 - Dawnhammer ';
     })
     ..thumbnailUrl = ctx.client.self.avatarURL()
     ..addField(name: 'Direction', content: scattered, inline: false)

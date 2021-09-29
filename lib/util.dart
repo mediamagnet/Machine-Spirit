@@ -48,7 +48,7 @@ Future<void> infoCommand(CommandContext ctx, String content) async {
     })
     ..addFooter((footer) {
       footer.text =
-          'Machine Spirit v.1.0.1 Farsight | Shard [${ctx.shardId + 1}] of [${ctx.client.shards}] | ${utils.dartVersion}';
+          'Machine Spirit 1.5.0 Dawnhammer | Shard [${ctx.shardId + 1}] of [${ctx.client.shards}] | ${utils.dartVersion}';
     })
     ..color = color
     ..addField(
@@ -98,7 +98,7 @@ Future<void> helpCommand(CommandContext ctx, String content) async {
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
-      footer.text = 'Machine Spirit v.1.0.1 Farsight';
+      footer.text = 'Machine Spirit v.1.5.0 Dawnhammer';
     })
     ..color = color
     ..addField(
