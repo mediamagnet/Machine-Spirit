@@ -2,11 +2,13 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:nyxx/nyxx.dart';
-import 'package:nyxx_commander/commander.dart';
-import 'package:toml/loader.dart';
+import 'package:nyxx_commander/nyxx_commander.dart';
+import 'package:nyxx_interactions/nyxx_interactions.dart';
+import 'package:toml/toml.dart';
 import 'package:machinespirit/utils.dart' as utils;
+import 'package:time_ago_provider/time_ago_provider.dart' show formatFull;
 
-Future<void> pingCommand(CommandContext ctx, String content) async {
+Future<void> pingCommand(ICommandContext ctx, String content) async {
   await ctx.message.delete();
   final random = Random();
   final color = DiscordColor.fromRgb(
@@ -36,59 +38,49 @@ Future<void> pingCommand(CommandContext ctx, String content) async {
   await message.edit(MessageBuilder.embed(embed));
 }
 
-Future<void> infoCommand(CommandContext ctx, String content) async {
-  final color = DiscordColor.fromRgb(
-      Random().nextInt(255), Random().nextInt(255), Random().nextInt(255));
-
-  final embed = EmbedBuilder()
-    ..addAuthor((author) {
-      author.name = ctx.client.self.tag;
-      author.iconUrl = ctx.client.self.avatarURL();
-      author.url = 'https://github.com/mediamagnet/Machine-Spirit';
-    })
-    ..addFooter((footer) {
-      footer.text =
-          'Machine Spirit 1.5.0 Dawnhammer | Shard [${ctx.shardId + 1}] of [${ctx.client.shards}] | ${utils.dartVersion}';
-    })
-    ..color = color
-    ..addField(
-        name: 'Uptime', content: ctx.client.uptime.inMinutes, inline: true)
-    ..addField(
-        name: 'DartVM memory usage',
-        content:
-            '${(ProcessInfo.currentRss / 1024 / 1024).toStringAsFixed(2)} MB',
-        inline: true)
-    ..addField(
-        name: 'Created at', content: ctx.client.app.createdAt, inline: true)
-    ..addField(
-        name: 'Guild count', content: ctx.client.guilds.count, inline: true)
-    ..addField(
-        name: 'Users count', content: ctx.client.users.count, inline: true)
-    ..addField(
-        name: 'Channels count',
-        content: ctx.client.channels.count,
-        inline: true)
-    ..addField(
-        name: 'Users in voice',
-        content: ctx.client.guilds.values
-            .map((g) => g.voiceStates.count)
-            .reduce((f, s) => f + s),
-        inline: true)
-    ..addField(name: 'Shard count', content: ctx.client.shards, inline: true)
-    ..addField(
-        name: 'Cached messages',
-        content: ctx.client.channels
-            .find((item) => item is TextChannel)
-            .cast<TextChannel>()
-            .map((e) => e.messageCache.count)
-            .fold(0, (first, second) => (first as int) + second),
-        inline: true);
+Future<void> infoCommand(ICommandContext ctx, String content) async {
   await ctx.message.delete();
-  await ctx.sendMessage(MessageBuilder.embed(embed));
+  await ctx.reply(await infoGenericCommand(ctx.client));
 }
 
-Future<void> helpCommand(CommandContext ctx, String content) async {
-  var cfg = await loadConfig('config.toml');
+Future<MessageBuilder> infoGenericCommand(INyxxWebsocket client, [int shardId = 0]) async {
+  final color = DiscordColor.fromRgb(Random().nextInt(255), Random().nextInt(255), Random().nextInt(255));
+
+  final embed = EmbedBuilder()
+    ..addAuthor((author) {
+      author.name = client.self.tag;
+      author.iconUrl = client.self.avatarURL();
+      author.url = 'https://github.com/mediamagnet/Machine-Spirit';
+    })
+    ..addFooter((footer) {
+      footer.text = 'Machine Spirit v 1.6.0 Voidblade';
+    })
+    ..color = color
+    ..addField(name: 'Cached Guilds', content: client.guilds.length, inline: true)
+    ..addField(name: 'Cached Users', content: client.users.length, inline: true)
+    ..addField(name: 'Cached Channels', content: client.channels.length, inline: true)
+    ..addField(name: 'Cached Voice States', content: client.guilds.values.map((g) => g.voiceStates.length).reduce((f, s) => f + s), inline: true)
+    ..addField(name: 'Shard count', content: client.shards, inline: true)
+    ..addField(
+      name: 'Cached messages',
+      content: client.channels.values
+        .whereType<ITextChannel>()
+        .map((e) => e.messageCache.length)
+        .fold(0, (first, second) => (first as int) + second),
+      inline: true)
+    ..addField(name: 'Memory usage (current/RSS)', content: utils.getMemoryUsageString(), inline: true)
+    ..addField(name: 'Member count (online/total)', content: utils.getApproxMemberCount(client), inline: true)
+    ..addField(name: 'Uptime', content: formatFull(client.startTime));
+
+  return ComponentMessageBuilder()
+    ..embeds = [embed]
+    ..componentRows = [
+      [LinkButtonBuilder('Machine-Spirit Source Code', 'https://github.com/mediamagnet/machine-spirit')]
+    ];
+}
+
+Future<void> helpCommand(ICommandContext ctx, String content) async {
+  var cfg = TomlDocument.parse('config.toml').toMap();
   final color = DiscordColor.fromRgb(
       Random().nextInt(255), Random().nextInt(255), Random().nextInt(255));
   final embed = EmbedBuilder()
@@ -98,7 +90,7 @@ Future<void> helpCommand(CommandContext ctx, String content) async {
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
-      footer.text = 'Machine Spirit v.1.5.0 Dawnhammer';
+      footer.text = 'Machine Spirit v 1.6.0 Voidblade';
     })
     ..color = color
     ..addField(
@@ -125,15 +117,15 @@ Future<void> helpCommand(CommandContext ctx, String content) async {
         content: 'sends info about the bot',
         inline: false)
     ..addField(
-        name: '${cfg['Bot']['Prefix']}ping',
+        name: '${cfg['Prefix']}ping',
         content: 'Sends current bot latency',
         inline: false)
     ..addField(
-        name: '${cfg['Bot']['Prefix']}help',
+        name: '${cfg['Prefix']}help',
         content: "You're reading it.",
         inline: false)
     ..addField(
-        name: '${cfg['Bot']['Prefix']}shutdown',
+        name: '${cfg['Prefix']}shutdown',
         content: 'Shuts the bot down',
         inline: false);
   await ctx.message.delete();

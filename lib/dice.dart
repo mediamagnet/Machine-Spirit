@@ -1,14 +1,15 @@
 import 'dart:math';
 import 'package:nyxx/nyxx.dart';
-import 'package:nyxx_commander/commander.dart';
-import 'package:toml/loader.dart';
+import 'package:nyxx_commander/nyxx_commander.dart';
+import 'package:nyxx_interactions/nyxx_interactions.dart';
+import 'package:toml/toml.dart';
 import 'package:d20/d20.dart';
 
-Future<void> diceCommand(CommandContext ctx, String content) async {
+Future<void> diceCommand(ICommandContext ctx, String content) async {
   var total_dice = List.empty(growable: true); // total rolled dice
   var tot_success; // total number of successes from your roll
   final d20 = D20();
-  var cfg = await loadConfig('config.toml');
+  var cfg = TomlDocument.parse('config.toml').toMap();
   var cont = content
       .replaceAll('${cfg['Bot']['Prefix']}roll ', '')
       .split(' '); // message content
@@ -67,7 +68,7 @@ Future<void> diceCommand(CommandContext ctx, String content) async {
   }
 }
 
-Future<void> critCommand(CommandContext ctx, String content) async {
+Future<void> critCommand(ICommandContext ctx, String content) async {
   final d20 = D20();
   var rolled;
   final random = Random();
@@ -179,10 +180,10 @@ Future<void> critCommand(CommandContext ctx, String content) async {
   await ctx.sendMessage(MessageBuilder.embed(embed));
 }
 
-Future<void> warpCommand(CommandContext ctx, String content) async {
+Future<void> warpCommand(ICommandContext ctx, String content) async {
   final d20 = D20();
   var rolled;
-  var cfg = await loadConfig('config.toml');
+  var cfg = TomlDocument.parse('config.toml').toMap();
   final random = Random();
   final color = DiscordColor.fromRgb(
       random.nextInt(255), random.nextInt(255), random.nextInt(255));
@@ -325,7 +326,7 @@ Future<void> warpCommand(CommandContext ctx, String content) async {
   await ctx.sendMessage(MessageBuilder.embed(embed));
 }
 
-Future<void> scatterCommand(CommandContext ctx, String content) async {
+Future<void> scatterCommand(ICommandContext ctx, String content) async {
   final d20 = D20();
   final random = Random();
   final color = DiscordColor.fromRgb(
