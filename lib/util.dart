@@ -1,4 +1,4 @@
-import 'dart:io';
+// import 'dart:io';
 import 'dart:math';
 
 import 'package:nyxx/nyxx.dart';
@@ -43,8 +43,10 @@ Future<void> infoCommand(ICommandContext ctx, String content) async {
   await ctx.reply(await infoGenericCommand(ctx.client));
 }
 
-Future<MessageBuilder> infoGenericCommand(INyxxWebsocket client, [int shardId = 0]) async {
-  final color = DiscordColor.fromRgb(Random().nextInt(255), Random().nextInt(255), Random().nextInt(255));
+Future<MessageBuilder> infoGenericCommand(INyxxWebsocket client,
+    [int shardId = 0]) async {
+  final color = DiscordColor.fromRgb(
+      Random().nextInt(255), Random().nextInt(255), Random().nextInt(255));
 
   final embed = EmbedBuilder()
     ..addAuthor((author) {
@@ -56,31 +58,46 @@ Future<MessageBuilder> infoGenericCommand(INyxxWebsocket client, [int shardId = 
       footer.text = 'Machine Spirit v 1.6.0 Voidblade';
     })
     ..color = color
-    ..addField(name: 'Cached Guilds', content: client.guilds.length, inline: true)
+    ..addField(
+        name: 'Cached Guilds', content: client.guilds.length, inline: true)
     ..addField(name: 'Cached Users', content: client.users.length, inline: true)
-    ..addField(name: 'Cached Channels', content: client.channels.length, inline: true)
-    ..addField(name: 'Cached Voice States', content: client.guilds.values.map((g) => g.voiceStates.length).reduce((f, s) => f + s), inline: true)
+    ..addField(
+        name: 'Cached Channels', content: client.channels.length, inline: true)
+    ..addField(
+        name: 'Cached Voice States',
+        content: client.guilds.values
+            .map((g) => g.voiceStates.length)
+            .reduce((f, s) => f + s),
+        inline: true)
     ..addField(name: 'Shard count', content: client.shards, inline: true)
     ..addField(
-      name: 'Cached messages',
-      content: client.channels.values
-        .whereType<ITextChannel>()
-        .map((e) => e.messageCache.length)
-        .fold(0, (first, second) => (first as int) + second),
-      inline: true)
-    ..addField(name: 'Memory usage (current/RSS)', content: utils.getMemoryUsageString(), inline: true)
-    ..addField(name: 'Member count (online/total)', content: utils.getApproxMemberCount(client), inline: true)
+        name: 'Cached messages',
+        content: client.channels.values
+            .whereType<ITextChannel>()
+            .map((e) => e.messageCache.length)
+            .fold(0, (first, second) => (first as int) + second),
+        inline: true)
+    ..addField(
+        name: 'Memory usage (current/RSS)',
+        content: utils.getMemoryUsageString(),
+        inline: true)
+    ..addField(
+        name: 'Member count (online/total)',
+        content: utils.getApproxMemberCount(client),
+        inline: true)
     ..addField(name: 'Uptime', content: formatFull(client.startTime));
 
   return ComponentMessageBuilder()
     ..embeds = [embed]
     ..componentRows = [
-      [LinkButtonBuilder('Machine-Spirit Source Code', 'https://github.com/mediamagnet/machine-spirit')]
+      [
+        LinkButtonBuilder("Click me, bet you won't",
+            'https://i.imgur.com/8N0zWyp.mp4')
+      ]
     ];
 }
 
 Future<void> helpCommand(ICommandContext ctx, String content) async {
-  var cfg = TomlDocument.parse('config.toml').toMap();
   final color = DiscordColor.fromRgb(
       Random().nextInt(255), Random().nextInt(255), Random().nextInt(255));
   final embed = EmbedBuilder()
@@ -95,37 +112,38 @@ Future<void> helpCommand(ICommandContext ctx, String content) async {
     ..color = color
     ..addField(
         name: 'prefix',
-        content: 'My current prefix is `${cfg['Bot']['Prefix']}`')
+        content: 'My current prefix is `${utils.conf('Bot/Prefix')}`')
     ..addField(
-        name: '${cfg['Bot']['Prefix']}roll',
+        name: '${utils.conf('Bot/Prefix')}roll',
         content: 'Roll the specified amount of dice, up to 50',
         inline: false)
     ..addField(
-        name: '${cfg['Bot']['Prefix']}crit',
+        name: '${utils.conf('Bot/Prefix')}crit',
         content: 'Roll for a critical effect',
         inline: false)
     ..addField(
-        name: '${cfg['Bot']['Prefix']}warp',
-        content: 'Roll for a warp effect, add 1-4 for each additional 1 rolled in the warp check.',
+        name: '${utils.conf('Bot/Prefix')}warp',
+        content:
+            'Roll for a warp effect, add 1-4 for each additional 1 rolled in the warp check.',
         inline: false)
     ..addField(
-        name: '${cfg['Bot']['Prefix']}scatter',
+        name: '${utils.conf('Bot/Prefix')}scatter',
         content: 'Cause Scatter dice are fun',
         inline: false)
     ..addField(
-        name: '${cfg['Bot']['Prefix']}info',
+        name: '${utils.conf('Bot/Prefix')}info',
         content: 'sends info about the bot',
         inline: false)
     ..addField(
-        name: '${cfg['Prefix']}ping',
+        name: '${utils.conf('Bot/Prefix')}ping',
         content: 'Sends current bot latency',
         inline: false)
     ..addField(
-        name: '${cfg['Prefix']}help',
+        name: '${utils.conf('Bot/Prefix')}help',
         content: "You're reading it.",
         inline: false)
     ..addField(
-        name: '${cfg['Prefix']}shutdown',
+        name: '${utils.conf('Bot/Prefix')}shutdown',
         content: 'Shuts the bot down',
         inline: false);
   await ctx.message.delete();

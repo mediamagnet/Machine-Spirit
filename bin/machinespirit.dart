@@ -1,5 +1,6 @@
-import 'package:machinespirit/species.dart';
-import 'package:mongo_dart/mongo_dart.dart';
+// import 'package:machinespirit/species.dart';
+// import 'package:mongo_dart/mongo_dart.dart';
+import 'package:logging/logging.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commander/nyxx_commander.dart'
     show CommandGroup, ICommandContext, ICommander;
@@ -10,22 +11,30 @@ import 'dart:async';
 import 'package:machinespirit/admin.dart';
 import 'package:machinespirit/util.dart';
 import 'package:machinespirit/dice.dart';
+import 'package:machinespirit/utils.dart' as utils;
 
 var ownerID;
 var launch = DateTime.now();
 var prefix;
 var botID;
+var botToken;
 
+late INyxxWebsocket bot;
 
 Future main(List<String> arguments) async {
+  await utils.tomlFile('config.toml');
   // final cron = Cron();
-  var cfg;
+  Logger.root.level = Level.INFO;
   try {
-    var doc = await TomlDocument.load('config.toml');
-    cfg = doc.toMap();
-    ownerID = cfg['Owner']['ID'];
-    prefix = cfg['Bot']['Prefix'];
-    botID = cfg['Bot']['BotID'];
+
+    ownerID = utils.conf('Owner/ID');
+    prefix = utils.conf('Bot/Prefix');
+    botID = utils.conf('Bot/ID');
+    botToken = utils.conf('Bot/Token');
+
+
+
+
 
 /*    var db = await Db.create('mongodb+srv://${cfg['DB']['User']}:${cfg['DB']['Pass']}@gemini.hjehy.mongodb.net/gemini?retryWrites=true&w=majority');
     await db.open();
@@ -34,10 +43,11 @@ Future main(List<String> arguments) async {
 
 
 
-    final bot = NyxxFactory.createNyxxWebsocket(cfg['Bot']['Token'], GatewayIntents.all,
-      options: ClientOptions(guildSubscriptions: false))
+    bot = NyxxFactory.createNyxxWebsocket(botToken, GatewayIntents.all)
     ..registerPlugin(Logging())
     ..registerPlugin(IgnoreExceptions());
+
+    await bot.connect();
 
     bot.onReady.listen((IReadyEvent e) {
       print('Connected to Discord');
@@ -54,12 +64,13 @@ Future main(List<String> arguments) async {
 
       bot.eventsWs.onMessageReceived.listen((IMessageReceivedEvent e) {
         if (e.message.content.contains(botID)) {
-          e.message.createReaction(UnicodeEmoji('🤯'));
+          e.message.createReaction(UnicodeEmoji('🟥'));
         }
       });
     });
 
-    ICommander.create(bot, prefix)
+
+    ICommander.create(bot, utils.prefixHandler)
       ..registerCommandGroup(CommandGroup(beforeHandler: checkForAdmin)
         ..registerSubCommand('shutdown', shutdownCommand))
       ..registerCommand('ping', pingCommand)
@@ -74,7 +85,6 @@ Future main(List<String> arguments) async {
   } catch (e) {
     print(e);
   }
-  return cfg;
 }
 
 FutureOr<bool> checkForAdmin(ICommandContext context) async {

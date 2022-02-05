@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commander/nyxx_commander.dart';
-import 'package:nyxx_interactions/nyxx_interactions.dart';
+// import 'package:nyxx_interactions/nyxx_interactions.dart';
 import 'package:toml/toml.dart';
 import 'package:d20/d20.dart';
 
@@ -51,7 +51,7 @@ Future<void> diceCommand(ICommandContext ctx, String content) async {
         author.url = 'https://github.com/mediamagnet/Machine-Spirit';
       })
       ..addFooter((footer) {
-        footer.text = 'Machine Spirit v1.5.0 - Dawnhammer ';
+        footer.text = 'Machine Spirit v 1.6.0 - Voidblade ';
       })
       ..thumbnailUrl = ctx.client.self.avatarURL()
       ..addField(
@@ -170,7 +170,7 @@ Future<void> critCommand(ICommandContext ctx, String content) async {
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
-      footer.text = 'Machine Spirit v1.5.0 - Dawnhammer ';
+      footer.text = 'Machine Spirit v 1.6.0 - Voidblade ';
     })
     ..thumbnailUrl = ctx.client.self.avatarURL()
     ..addField(name: 'Critical:', content: table, inline: false)
@@ -317,7 +317,7 @@ Future<void> warpCommand(ICommandContext ctx, String content) async {
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
-      footer.text = 'Machine Spirit v1.5.0 - Dawnhammer ';
+      footer.text = 'Machine Spirit v 1.6.0 - Voidblade ';
     })
     ..thumbnailUrl = ctx.client.self.avatarURL()
     ..addField(name: 'Rolled value:', content: rolled, inline: false)
@@ -352,7 +352,7 @@ Future<void> scatterCommand(ICommandContext ctx, String content) async {
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
-      footer.text = 'Machine Spirit v1.5.0 - Dawnhammer ';
+      footer.text = 'Machine Spirit v 1.6.0 - Voidblade ';
     })
     ..thumbnailUrl = ctx.client.self.avatarURL()
     ..addField(name: 'Direction', content: scattered, inline: false)
