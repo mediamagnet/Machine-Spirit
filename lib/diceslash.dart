@@ -188,15 +188,11 @@ Future<void> warpSlashCommand(ISlashCommandInteractionEvent event) async {
   final color = DiscordColor.fromRgb(
       random.nextInt(255), random.nextInt(255), random.nextInt(255));
   var warp;
-  var argContent = event
-      .getArg('extra')
-      .value;
+  var argContent = event.interaction.getArg('extra');
   print(argContent);
   var extraWarp;
 
-  if (argContent == null) {
-    extraWarp = 0;
-  } else if (argContent == 1) {
+  if (argContent == 1) {
     extraWarp = 10;
   } else if (argContent == 2) {
     extraWarp = 20;
@@ -211,9 +207,7 @@ Future<void> warpSlashCommand(ISlashCommandInteractionEvent event) async {
 
   rolled = roll1.finalResult * 10 + roll2.finalResult;
 
-  if (extraWarp == 0) {
-    rolled = rolled = 0;
-  } else if (extraWarp == 10) {
+  if (extraWarp == 10) {
     rolled = rolled + 10;
   } else if (extraWarp == 20) {
     rolled = rolled + 20;

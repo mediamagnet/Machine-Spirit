@@ -89,7 +89,7 @@ Future main(List<String> arguments) async {
         CommandOptionBuilder(CommandOptionType.string, 'dice', 'Number of dice to roll')
       ], guild: null)..registerHandler(diceSlashCommand))
       ..registerSlashCommand(SlashCommandBuilder('warp', 'Roll on the Perils of the Warp table', [
-        CommandOptionBuilder(CommandOptionType.integer, 'extra', 'Number of extra warp dice to roll, IF NONE PUT 0')
+        CommandOptionBuilder(CommandOptionType.integer, 'extra', 'Number of extra warp dice to roll', required: false)
       ], guild: null)..registerHandler(warpSlashCommand))
     ..syncOnReady(syncRule: ManualCommandSync(sync: utils.getSyncCommandsOrOverride(true)));
   } catch (e) {
