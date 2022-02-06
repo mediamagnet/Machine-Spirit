@@ -86,11 +86,13 @@ Future main(List<String> arguments) async {
 
     IInteractions.create(WebsocketInteractionBackend(bot))
       ..registerSlashCommand(SlashCommandBuilder('roll', 'roll the dice', [
-        CommandOptionBuilder(CommandOptionType.string, 'dice', 'Number of dice to roll')
-      ], guild: null)..registerHandler(diceSlashCommand))
+        CommandOptionBuilder(CommandOptionType.string, 'dice', 'Number of dice to roll', required: true)
+      ])..registerHandler(diceSlashCommand))
       ..registerSlashCommand(SlashCommandBuilder('warp', 'Roll on the Perils of the Warp table', [
         CommandOptionBuilder(CommandOptionType.integer, 'extra', 'Number of extra warp dice to roll', required: false)
-      ], guild: null)..registerHandler(warpSlashCommand))
+      ])..registerHandler(warpSlashCommand))
+      ..registerSlashCommand(SlashCommandBuilder('crit', 'Roll on the crit table', [])..registerHandler(critSlashCommand))
+      ..registerSlashCommand(SlashCommandBuilder('scatter', 'Scatter dice are fun', [])..registerHandler(scatterSlashCommand))
     ..syncOnReady(syncRule: ManualCommandSync(sync: utils.getSyncCommandsOrOverride(true)));
   } catch (e) {
     print(e);

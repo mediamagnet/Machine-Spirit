@@ -65,7 +65,7 @@ Future<void> diceSlashCommand(ISlashCommandInteractionEvent event) async {
   }
 }
 
-Future<void> critSlashCommand(ICommandContext ctx, String content) async {
+Future<void> critSlashCommand(ISlashCommandInteractionEvent event) async {
   final d20 = D20();
   var rolled;
   final random = Random();
@@ -74,6 +74,8 @@ Future<void> critSlashCommand(ICommandContext ctx, String content) async {
   var table;
   var effect;
   var glory;
+
+  await event.acknowledge();
 
   var roll1 = d20.rollWithStatistics('1d6');
   var roll2 = d20.rollWithStatistics('1d6');
@@ -162,19 +164,19 @@ Future<void> critSlashCommand(ICommandContext ctx, String content) async {
   final embed = EmbedBuilder()
     ..color = color
     ..addAuthor((author) {
-      author.name = ctx.message.author.username;
-      author.iconUrl = ctx.message.author.avatarURL();
+      author.name = event.interaction.userAuthor!.username;
+      author.iconUrl = event.interaction.userAuthor!.avatarURL();
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
       footer.text = 'Machine Spirit v 1.6.0 - Voidblade ';
     })
-    ..thumbnailUrl = ctx.client.self.avatarURL()
+    ..thumbnailUrl = event.interaction.userAuthor!.avatarURL()
     ..addField(name: 'Critical:', content: table, inline: false)
     ..addField(name: 'Effect:', content: effect, inline: false)
     ..addField(name: 'Glory', content: glory, inline: false);
 
-  await ctx.sendMessage(MessageBuilder.embed(embed));
+  await event.respond(MessageBuilder.embed(embed));
 }
 
 Future<void> warpSlashCommand(ISlashCommandInteractionEvent event) async {
@@ -325,12 +327,13 @@ Future<void> warpSlashCommand(ISlashCommandInteractionEvent event) async {
   await event.respond(MessageBuilder.embed(embed));
 }
 
-Future<void> scatterSlashCommand(ICommandContext ctx, String content) async {
+Future<void> scatterSlashCommand(ISlashCommandInteractionEvent event) async {
   final d20 = D20();
   final random = Random();
   final color = DiscordColor.fromRgb(
       random.nextInt(255), random.nextInt(255), random.nextInt(255));
 
+  await event.acknowledge();
   var roll1 = d20.rollWithStatistics('1d9');
   var roll2 = d20.rollWithStatistics('1d6');
 
@@ -346,18 +349,17 @@ Future<void> scatterSlashCommand(ICommandContext ctx, String content) async {
   final embed = EmbedBuilder()
     ..color = color
     ..addAuthor((author) {
-      author.name = ctx.message.author.username;
-      author.iconUrl = ctx.message.author.avatarURL();
+      author.name = event.interaction.userAuthor!.username;
+      author.iconUrl = event.interaction.userAuthor!.avatarURL();
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
       footer.text = 'Machine Spirit v 1.6.0 - Voidblade ';
     })
-    ..thumbnailUrl = ctx.client.self.avatarURL()
     ..addField(name: 'Direction', content: scattered, inline: false)
     ..addField(name: 'Feet:', content: rolled2, inline: false);
 
-  await ctx.sendMessage(MessageBuilder.embed(embed));
+  await event.respond(MessageBuilder.embed(embed));
 }
 
 // :arrow_down: :arrow_left: :arrow_right: :arrow_up: :arrow_upper_left: :arrow_upper_right: :arrow_lower_left: :arrow_lower_right: :dart:
