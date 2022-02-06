@@ -1,6 +1,7 @@
 // import 'package:machinespirit/species.dart';
 // import 'package:mongo_dart/mongo_dart.dart';
 import 'package:logging/logging.dart';
+import 'package:machinespirit/diceslash.dart';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commander/nyxx_commander.dart'
     show CommandGroup, ICommandContext, ICommander;
@@ -82,6 +83,15 @@ Future main(List<String> arguments) async {
       ..registerCommand('scatter', scatterCommand);
       // ..registerCommand('test', speciesCommand)
       // ..registerCommand('prefix', prefixCommand);
+
+    IInteractions.create(WebsocketInteractionBackend(bot))
+      ..registerSlashCommand(SlashCommandBuilder('roll', 'roll the dice', [
+        CommandOptionBuilder(CommandOptionType.string, 'dice', 'Number of dice to roll')
+      ], guild: null)..registerHandler(diceSlashCommand))
+      ..registerSlashCommand(SlashCommandBuilder('warp', 'Roll on the Perils of the Warp table', [
+        CommandOptionBuilder(CommandOptionType.string, 'extra', 'Number of extra warp dice to roll')
+      ], guild: null)..registerHandler(warpSlashCommand))
+    ..syncOnReady(syncRule: ManualCommandSync(sync: utils.getSyncCommandsOrOverride(true)));
   } catch (e) {
     print(e);
   }
