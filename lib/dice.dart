@@ -4,6 +4,7 @@ import 'package:nyxx_commander/nyxx_commander.dart';
 // import 'package:nyxx_interactions/nyxx_interactions.dart';
 import 'package:toml/toml.dart';
 import 'package:d20/d20.dart';
+import 'package:machinespirit/utils.dart' as utils;
 
 Future<void> diceCommand(ICommandContext ctx, String content) async {
   var total_dice = List.empty(growable: true); // total rolled dice
@@ -183,13 +184,12 @@ Future<void> critCommand(ICommandContext ctx, String content) async {
 Future<void> warpCommand(ICommandContext ctx, String content) async {
   final d20 = D20();
   var rolled;
-  var cfg = TomlDocument.parse('config.toml').toMap();
   final random = Random();
   final color = DiscordColor.fromRgb(
       random.nextInt(255), random.nextInt(255), random.nextInt(255));
   var warp;
   var msgContent =
-      ctx.message.content.replaceAll('${cfg['Bot']['Prefix']}warp ', '');
+      ctx.message.content.replaceAll('${utils.conf('Bot/Prefix')}warp ', '');
   var extraWarp;
 
   if (msgContent == '1') {
