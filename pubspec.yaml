@@ -4,13 +4,13 @@ version: 1.6.0
 # homepage: https://www.example.com
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.13.0 <3.0.0'
 
 dependencies:
   logging: ^1.0.0
-  nyxx: 3.2.6
-  nyxx_commander: any
-  nyxx_interactions: any
+  nyxx: ^3.0.0
+  nyxx_commander: ^3.0.0
+  nyxx_interactions: ^3.0.0
   d20: any
   toml: any
   cron: any

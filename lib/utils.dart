@@ -16,6 +16,15 @@ String get dartVersion {
   final platformVersion = Platform.version;
   return platformVersion.split('(').first;
 }
+bool get isTest => isBool(conf('bot/test'));
+bool get syncCommands => isBool(conf('Bot/SyncCommands'));
+Snowflake? get testGuildSnowflake => isTest ? Snowflake(108344598018957312) : null;
+
+bool isBool(String? value) {
+  return value != null && (value == 'true' || value == '1');
+}
+
+bool getSyncCommandsOrOverride([bool? overrideSync]) => overrideSync ?? syncCommands;
 
 String getMemoryUsageString() {
   final current = (ProcessInfo.currentRss / 1024 / 1024).toStringAsFixed(2);

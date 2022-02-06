@@ -1,29 +1,26 @@
 import 'dart:math';
 import 'package:nyxx/nyxx.dart';
 import 'package:nyxx_commander/nyxx_commander.dart';
+import 'package:nyxx_interactions/nyxx_interactions.dart';
 // import 'package:nyxx_interactions/nyxx_interactions.dart';
 import 'package:toml/toml.dart';
 import 'package:d20/d20.dart';
-import 'package:machinespirit/utils.dart' as utils;
 
-Future<void> diceCommand(ICommandContext ctx, String content) async {
+Future<void> diceSlashCommand(ISlashCommandInteractionEvent event) async {
   var total_dice = List.empty(growable: true); // total rolled dice
   var tot_success; // total number of successes from your roll
   final d20 = D20();
-  var cfg = TomlDocument.parse('config.toml').toMap();
-  var cont = content
-      .replaceAll('${cfg['Bot']['Prefix']}roll ', '')
-      .split(' '); // message content
   var rolled; // dice rolls
   final random = Random();
   final color = DiscordColor.fromRgb(
       random.nextInt(255), random.nextInt(255), random.nextInt(255));
-
-  if (int.parse(cont[0]) >= 51) {
-    await ctx.sendMessage(MessageBuilder.content('This command now has a slash command and will be removed in the near future please use `/roll` instead.'));
-    await ctx.sendMessage(MessageBuilder.content('Please roll less than 50 dice'));
+  await event.acknowledge();
+  var ctx = event.getArg('dice').value.toString();
+  var cont = int.parse(ctx);
+  if (cont >= 51) {
+    await event.respond(MessageBuilder.content('Please roll less than 50 dice'));
   } else {
-    for (var i = 1; i <= int.parse(cont[0]); i++) {
+    for (var i = 1; i <= cont; i++) {
       rolled = d20.rollWithStatistics('1d6');
       total_dice.add(rolled.finalResult);
     }
@@ -47,14 +44,13 @@ Future<void> diceCommand(ICommandContext ctx, String content) async {
     final embed = EmbedBuilder()
       ..color = color
       ..addAuthor((author) {
-        author.name = ctx.message.author.username;
-        author.iconUrl = ctx.message.author.avatarURL();
+        author.name = event.interaction.userAuthor!.username;
+        author.iconUrl = event.interaction.userAuthor!.avatarURL();
         author.url = 'https://github.com/mediamagnet/Machine-Spirit';
       })
       ..addFooter((footer) {
         footer.text = 'Machine Spirit v 1.6.0 - Voidblade ';
       })
-      ..thumbnailUrl = ctx.client.self.avatarURL()
       ..addField(
           name: 'Rolls:',
           content: total_dice.toString().replaceAll('[', '').replaceAll(']', ''),
@@ -65,12 +61,11 @@ Future<void> diceCommand(ICommandContext ctx, String content) async {
         inline: false)
       ..addField(
           name: 'Successes:', content: tot_success.toString(), inline: false);
-    await ctx.sendMessage(MessageBuilder.content('This command now has a slash command and will be removed in the near future please use `/roll` instead.'));
-    await ctx.sendMessage(MessageBuilder.embed(embed));
+    await event.respond(MessageBuilder.embed(embed));
   }
 }
 
-Future<void> critCommand(ICommandContext ctx, String content) async {
+Future<void> critSlashCommand(ISlashCommandInteractionEvent event) async {
   final d20 = D20();
   var rolled;
   final random = Random();
@@ -79,6 +74,8 @@ Future<void> critCommand(ICommandContext ctx, String content) async {
   var table;
   var effect;
   var glory;
+
+  await event.acknowledge();
 
   var roll1 = d20.rollWithStatistics('1d6');
   var roll2 = d20.rollWithStatistics('1d6');
@@ -167,40 +164,43 @@ Future<void> critCommand(ICommandContext ctx, String content) async {
   final embed = EmbedBuilder()
     ..color = color
     ..addAuthor((author) {
-      author.name = ctx.message.author.username;
-      author.iconUrl = ctx.message.author.avatarURL();
+      author.name = event.interaction.userAuthor!.username;
+      author.iconUrl = event.interaction.userAuthor!.avatarURL();
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
       footer.text = 'Machine Spirit v 1.6.0 - Voidblade ';
     })
-    ..thumbnailUrl = ctx.client.self.avatarURL()
+    ..thumbnailUrl = event.interaction.userAuthor!.avatarURL()
     ..addField(name: 'Critical:', content: table, inline: false)
     ..addField(name: 'Effect:', content: effect, inline: false)
     ..addField(name: 'Glory', content: glory, inline: false);
 
-  await ctx.sendMessage(MessageBuilder.content('This command now has a slash command and will be removed in the near future please use `/crit` instead.'));
-  await ctx.sendMessage(MessageBuilder.embed(embed));
+  await event.respond(MessageBuilder.embed(embed));
 }
 
-Future<void> warpCommand(ICommandContext ctx, String content) async {
+Future<void> warpSlashCommand(ISlashCommandInteractionEvent event) async {
   final d20 = D20();
+
+  await event.acknowledge();
+
   var rolled;
+
   final random = Random();
   final color = DiscordColor.fromRgb(
       random.nextInt(255), random.nextInt(255), random.nextInt(255));
   var warp;
-  var msgContent =
-      ctx.message.content.replaceAll('${utils.conf('Bot/Prefix')}warp ', '');
+  var argContent = event.interaction.getArg('extra');
+  print(argContent);
   var extraWarp;
 
-  if (msgContent == '1') {
+  if (argContent == 1) {
     extraWarp = 10;
-  } else if (msgContent == '2') {
+  } else if (argContent == 2) {
     extraWarp = 20;
-  } else if (msgContent == '3') {
+  } else if (argContent == 3) {
     extraWarp = 30;
-  } else if (msgContent == '4') {
+  } else if (argContent == 4) {
     extraWarp = 40;
   };
 
@@ -314,27 +314,26 @@ Future<void> warpCommand(ICommandContext ctx, String content) async {
   final embed = EmbedBuilder()
     ..color = color
     ..addAuthor((author) {
-      author.name = ctx.message.author.username;
-      author.iconUrl = ctx.message.author.avatarURL();
+      author.name = event.interaction.userAuthor!.username;
+      author.iconUrl = event.interaction.userAuthor!.avatarURL();
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
       footer.text = 'Machine Spirit v 1.6.0 - Voidblade ';
     })
-    ..thumbnailUrl = ctx.client.self.avatarURL()
     ..addField(name: 'Rolled value:', content: rolled, inline: false)
     ..addField(name: 'Perils of the Warp:', content: warp, inline: false);
 
-  await ctx.sendMessage(MessageBuilder.content('This command now has a slash command and will be removed in the near future please use `/warp` instead.'));
-  await ctx.sendMessage(MessageBuilder.embed(embed));
+  await event.respond(MessageBuilder.embed(embed));
 }
 
-Future<void> scatterCommand(ICommandContext ctx, String content) async {
+Future<void> scatterSlashCommand(ISlashCommandInteractionEvent event) async {
   final d20 = D20();
   final random = Random();
   final color = DiscordColor.fromRgb(
       random.nextInt(255), random.nextInt(255), random.nextInt(255));
 
+  await event.acknowledge();
   var roll1 = d20.rollWithStatistics('1d9');
   var roll2 = d20.rollWithStatistics('1d6');
 
@@ -350,19 +349,17 @@ Future<void> scatterCommand(ICommandContext ctx, String content) async {
   final embed = EmbedBuilder()
     ..color = color
     ..addAuthor((author) {
-      author.name = ctx.message.author.username;
-      author.iconUrl = ctx.message.author.avatarURL();
+      author.name = event.interaction.userAuthor!.username;
+      author.iconUrl = event.interaction.userAuthor!.avatarURL();
       author.url = 'https://github.com/mediamagnet/Machine-Spirit';
     })
     ..addFooter((footer) {
       footer.text = 'Machine Spirit v 1.6.0 - Voidblade ';
     })
-    ..thumbnailUrl = ctx.client.self.avatarURL()
     ..addField(name: 'Direction', content: scattered, inline: false)
     ..addField(name: 'Feet:', content: rolled2, inline: false);
 
-  await ctx.sendMessage(MessageBuilder.content('This command now has a slash command and will be removed in the near future please use `/scatter` instead.'));
-  await ctx.sendMessage(MessageBuilder.embed(embed));
+  await event.respond(MessageBuilder.embed(embed));
 }
 
 // :arrow_down: :arrow_left: :arrow_right: :arrow_up: :arrow_upper_left: :arrow_upper_right: :arrow_lower_left: :arrow_lower_right: :dart:
