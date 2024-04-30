@@ -27,26 +27,19 @@ Future main(List<String> arguments) async {
   // final cron = Cron();
   Logger.root.level = Level.INFO;
   try {
-
     ownerID = utils.conf('Owner/ID');
     prefix = utils.conf('Bot/Prefix');
     botID = utils.conf('Bot/ID');
     botToken = utils.conf('Bot/Token');
-
-
-
-
 
 /*    var db = await Db.create('mongodb+srv://${cfg['DB']['User']}:${cfg['DB']['Pass']}@gemini.hjehy.mongodb.net/gemini?retryWrites=true&w=majority');
     await db.open();
 
     var coll = db.collection('machine_spirit');*/
 
-
-
     bot = NyxxFactory.createNyxxWebsocket(botToken, GatewayIntents.all)
-    ..registerPlugin(Logging())
-    ..registerPlugin(IgnoreExceptions());
+      ..registerPlugin(Logging())
+      ..registerPlugin(IgnoreExceptions());
 
     await bot.connect();
 
@@ -70,7 +63,6 @@ Future main(List<String> arguments) async {
       });
     });
 
-
     ICommander.create(bot, utils.prefixHandler)
       ..registerCommandGroup(CommandGroup(beforeHandler: checkForAdmin)
         ..registerSubCommand('shutdown', shutdownCommand))
@@ -81,19 +73,35 @@ Future main(List<String> arguments) async {
       ..registerCommand('warp', warpCommand)
       ..registerCommand('help', helpCommand)
       ..registerCommand('scatter', scatterCommand);
-      // ..registerCommand('test', speciesCommand)
-      // ..registerCommand('prefix', prefixCommand);
+    // ..registerCommand('test', speciesCommand)
+    // ..registerCommand('prefix', prefixCommand);
 
     IInteractions.create(WebsocketInteractionBackend(bot))
       ..registerSlashCommand(SlashCommandBuilder('roll', 'roll the dice', [
-        CommandOptionBuilder(CommandOptionType.string, 'dice', 'Number of dice to roll', required: true)
-      ])..registerHandler(diceSlashCommand))
-      ..registerSlashCommand(SlashCommandBuilder('warp', 'Roll on the Perils of the Warp table', [
-        CommandOptionBuilder(CommandOptionType.integer, 'extra', 'Number of extra warp dice to roll', required: false)
-      ])..registerHandler(warpSlashCommand))
-      ..registerSlashCommand(SlashCommandBuilder('crit', 'Roll on the crit table', [])..registerHandler(critSlashCommand))
-      ..registerSlashCommand(SlashCommandBuilder('scatter', 'Scatter dice are fun', [])..registerHandler(scatterSlashCommand))
-    ..syncOnReady(syncRule: ManualCommandSync(sync: utils.getSyncCommandsOrOverride(true)));
+        CommandOptionBuilder(
+            CommandOptionType.string, 'dice', 'Number of dice to roll',
+            required: true)
+      ])
+        ..registerHandler(diceSlashCommand))
+      ..registerSlashCommand(
+          SlashCommandBuilder('warp', 'Roll on the Perils of the Warp table', [
+        CommandOptionBuilder(CommandOptionType.integer, 'extra',
+            'Number of extra warp dice to roll',
+            required: false)
+      ])
+            ..registerHandler(warpSlashCommand))
+      ..registerSlashCommand(
+          SlashCommandBuilder('crit', 'Roll on the crit table', [])
+            ..registerHandler(critSlashCommand))
+      ..registerSlashCommand(
+          SlashCommandBuilder('scatter', 'Scatter dice are fun', [])
+            ..registerHandler(scatterSlashCommand))
+      ..registerSlashCommand(SlashCommandBuilder(
+          'aldari', 'Perils of the Warp Table for Aldari', [])
+        ..registerHandler(aldariSlashCommand))
+      ..syncOnReady(
+          syncRule:
+              ManualCommandSync(sync: utils.getSyncCommandsOrOverride(true)));
   } catch (e) {
     print(e);
   }
