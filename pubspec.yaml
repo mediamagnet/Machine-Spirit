@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   logging: ^1.0.0
-  nyxx: ^3.0.0
+  nyxx: 3.2.6
   nyxx_commander: ^3.0.0
   nyxx_interactions: ^3.0.0
   d20: any

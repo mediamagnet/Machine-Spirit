@@ -91,8 +91,8 @@ Future<MessageBuilder> infoGenericCommand(INyxxWebsocket client,
     ..embeds = [embed]
     ..componentRows = [
       [
-        LinkButtonBuilder("Click me, bet you won't",
-            'https://i.imgur.com/8N0zWyp.mp4')
+        LinkButtonBuilder(
+            "Click me, bet you won't", 'https://i.imgur.com/8N0zWyp.mp4')
       ]
     ];
 }

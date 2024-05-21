@@ -97,8 +97,11 @@ Future main(List<String> arguments) async {
           SlashCommandBuilder('scatter', 'Scatter dice are fun', [])
             ..registerHandler(scatterSlashCommand))
       ..registerSlashCommand(SlashCommandBuilder(
-          'aldari', 'Perils of the Warp Table for Aldari', [])
+          'aeldari', 'Perils of the Warp Table for Aldari', [])
         ..registerHandler(aldariSlashCommand))
+      ..registerSlashCommand(SlashCommandBuilder(
+          'endevours', 'Endeavour table from Forsaken player guide', [])
+        ..registerHandler(endevourSlashCommand))
       ..syncOnReady(
           syncRule:
               ManualCommandSync(sync: utils.getSyncCommandsOrOverride(true)));

@@ -20,8 +20,10 @@ Future<void> diceCommand(ICommandContext ctx, String content) async {
       random.nextInt(255), random.nextInt(255), random.nextInt(255));
 
   if (int.parse(cont[0]) >= 51) {
-    await ctx.sendMessage(MessageBuilder.content('This command now has a slash command and will be removed in the near future please use `/roll` instead.'));
-    await ctx.sendMessage(MessageBuilder.content('Please roll less than 50 dice'));
+    await ctx.sendMessage(MessageBuilder.content(
+        'This command now has a slash command and will be removed in the near future please use `/roll` instead.'));
+    await ctx
+        .sendMessage(MessageBuilder.content('Please roll less than 50 dice'));
   } else {
     for (var i = 1; i <= int.parse(cont[0]); i++) {
       rolled = d20.rollWithStatistics('1d6');
@@ -57,15 +59,14 @@ Future<void> diceCommand(ICommandContext ctx, String content) async {
       ..thumbnailUrl = ctx.client.self.avatarURL()
       ..addField(
           name: 'Rolls:',
-          content: total_dice.toString().replaceAll('[', '').replaceAll(']', ''),
+          content:
+              total_dice.toString().replaceAll('[', '').replaceAll(']', ''),
           inline: false)
-      ..addField(
-        name: 'Wrath:',
-        content: '$lastDie',
-        inline: false)
+      ..addField(name: 'Wrath:', content: '$lastDie', inline: false)
       ..addField(
           name: 'Successes:', content: tot_success.toString(), inline: false);
-    await ctx.sendMessage(MessageBuilder.content('This command now has a slash command and will be removed in the near future please use `/roll` instead.'));
+    await ctx.sendMessage(MessageBuilder.content(
+        'This command now has a slash command and will be removed in the near future please use `/roll` instead.'));
     await ctx.sendMessage(MessageBuilder.embed(embed));
   }
 }
@@ -179,7 +180,8 @@ Future<void> critCommand(ICommandContext ctx, String content) async {
     ..addField(name: 'Effect:', content: effect, inline: false)
     ..addField(name: 'Glory', content: glory, inline: false);
 
-  await ctx.sendMessage(MessageBuilder.content('This command now has a slash command and will be removed in the near future please use `/crit` instead.'));
+  await ctx.sendMessage(MessageBuilder.content(
+      'This command now has a slash command and will be removed in the near future please use `/crit` instead.'));
   await ctx.sendMessage(MessageBuilder.embed(embed));
 }
 
@@ -202,7 +204,8 @@ Future<void> warpCommand(ICommandContext ctx, String content) async {
     extraWarp = 30;
   } else if (msgContent == '4') {
     extraWarp = 40;
-  };
+  }
+  ;
 
   var roll1 = d20.rollWithStatistics('1d6');
   var roll2 = d20.rollWithStatistics('1d6');
@@ -217,7 +220,8 @@ Future<void> warpCommand(ICommandContext ctx, String content) async {
     rolled = rolled + 30;
   } else if (extraWarp == 40) {
     rolled = rolled + 40;
-  };
+  }
+  ;
 
   if (rolled <= 11 && rolled <= 12) {
     warp =
@@ -325,7 +329,8 @@ Future<void> warpCommand(ICommandContext ctx, String content) async {
     ..addField(name: 'Rolled value:', content: rolled, inline: false)
     ..addField(name: 'Perils of the Warp:', content: warp, inline: false);
 
-  await ctx.sendMessage(MessageBuilder.content('This command now has a slash command and will be removed in the near future please use `/warp` instead.'));
+  await ctx.sendMessage(MessageBuilder.content(
+      'This command now has a slash command and will be removed in the near future please use `/warp` instead.'));
   await ctx.sendMessage(MessageBuilder.embed(embed));
 }
 
@@ -361,7 +366,8 @@ Future<void> scatterCommand(ICommandContext ctx, String content) async {
     ..addField(name: 'Direction', content: scattered, inline: false)
     ..addField(name: 'Feet:', content: rolled2, inline: false);
 
-  await ctx.sendMessage(MessageBuilder.content('This command now has a slash command and will be removed in the near future please use `/scatter` instead.'));
+  await ctx.sendMessage(MessageBuilder.content(
+      'This command now has a slash command and will be removed in the near future please use `/scatter` instead.'));
   await ctx.sendMessage(MessageBuilder.embed(embed));
 }
 

@@ -178,6 +178,144 @@ Future<void> critSlashCommand(ISlashCommandInteractionEvent event) async {
   await event.respond(MessageBuilder.embed(embed));
 }
 
+Future<void> endevourSlashCommand(ISlashCommandInteractionEvent event) async {
+  final d20 = D20();
+  var rolled;
+  final random = Random();
+  final color = DiscordColor.fromRgb(
+      random.nextInt(255), random.nextInt(255), random.nextInt(255));
+  String title;
+  String effect;
+  String descr;
+
+  await event.acknowledge();
+
+  var roll1 = d20.rollWithStatistics('1d6');
+  var roll2 = d20.rollWithStatistics('1d6');
+
+  rolled = roll1.finalResult * 10 + roll2.finalResult;
+
+  if (rolled <= 11 && rolled <= 12) {
+    title = 'Haunted Past';
+    descr =
+        'An event or person from your past appears to complicate your life. This comes at the most inopportune moment, possibly preventing you from completing your Endeavour. The prodigal acquaintance may be friendly, or have dishonest intentions.';
+    effect =
+        'If you choose to take a Simple Test, then you subtract 1 from the result of your d6 roll. If you make a Skill Test, it results in a Complication regardless of the result on the Wrath Die.';
+  } else if (rolled <= 13 && rolled <= 14) {
+    title = 'Atmospheric Pressure';
+    descr =
+        'You encounter a bout of bad weather typical to the 41st Millenium. Acrid acid rain falls, industrial effluent fills city streets with smog, or the void itself roils with Warp Storms.';
+    effect =
+        'The DN of any social Tests to complete Endeavours increases by +1, as everyone is either in a foul mood or sheltering from the weather. The GM may determine that these environmental conditions persist into your next adventure.';
+  } else if (rolled <= 15 && rolled <= 16) {
+    title = 'Ghost in the Machine';
+    descr =
+        'Be it through sabotage, mechanical complication, a machine curse, or an aggressive string of scrapcode, your technology — and all technology around you — is malfunctioning.';
+    effect =
+        'Unless you take the Maintain Equipment Endeavour,  you suffer a Complication the next time you make a Ballistic Skill (A), Pilot (A), or Tech (Int) Test. This event may have additional narrative effects as determined by the GM.';
+  } else if (rolled <= 21 && rolled <= 22) {
+    title = 'Recruitment Drive';
+    descr =
+        'Be it an Astra Militarum Regiment, a derivative sect of the Imperial Creed, or a vile cult of heretics opposed to the Imperium, a specific group is recruiting. This interferes with the day-to-day operations of the local area in obvious or subtle ways.';
+    effect =
+        'If you succeed at a DN 4 Deception (Fel), Intimidation (Wil), or Persuasion (Fel) Skill Test, you manage to evade the predations of whichever organisation attempting to inculcate you. Otherwise, you lose your Endeavour escaping the machinations or ministrations of their indoctrination.';
+  } else if (rolled <= 23 && rolled <= 24) {
+    title = 'The Emperor’s Due';
+    descr =
+        'The tithes of the Administratum are as undeniable as a violent death in the 41st Millenium, and none know when either will come for them. ';
+    effect =
+        'The Administratum request a tithe of Wealth equal to your Tier. You may also pay the tithe with Wargear of equal or greater value. If you do not want to pay the tithe, you are free to try to negotiate with the Administratum, perhaps assisting them in their tithe collection — how this plays out is up to you and your GM.';
+  } else if (rolled <= 25 && rolled <= 26) {
+    title = 'Returning Heroes';
+    descr =
+        'A proud parade of military might is held in honour of heroes — or what remains of them — returning from the frontlines. The populace flock to this procession of somber coffins and powerful war machines. ';
+    effect =
+        'You have been summoned for mandatory attendance, but this does not interfere with your Endeavours. It is up to your group if they are inspired by the bravery of these heroes of the Imperium, or enraged by the damage wrought by the foul foes of Humanity. Inspired+1 Glory for the group at the start of your next adventure. Enraged+1 Wrath for each character at the start of your next adventure.';
+  } else if (rolled <= 31 && rolled <= 32) {
+    title = 'Under Suspicion';
+    descr =
+        'Someone is taking notice of you. Be it the Confessors of the Ecclesiarchy monitoring your piety, the local Hive Enforcers cracking down on crime, or even an Inquisitor suspicious of your motives, your higher-ups have cast their sight down.';
+    effect =
+        'You cannot select the Irregular Acquisition Endeavour and the DN for the Antagonise Endeavour increases by 2. If you have the SCUM Keyword, you can ignore his effect as you’ve learned how to evade the law.';
+  } else if (rolled <= 33 && rolled <= 34) {
+    title = 'Space Hulk';
+    descr =
+        'Without warning a Space Hulk emerges from the Great Rift. This new arrival causes a scramble of action as all Factions make hasty preparations to investigate.';
+    effect =
+        'To ensure that their agents can reach the site first, the Duties & Responsibilities for all Factions are temporarily rescinded, and you can choose to perform any General Endeavour without suffering a Factionbased penalty. Exactly what is on the Space Hulk is left to the GM, and may become the focal point for a new adventure.';
+  } else if (rolled <= 35 && rolled <= 36) {
+    title = 'Pious Parade';
+    descr =
+        'The Ecclesiarchy has stoked the faith of the populace, prompting them into extended celebrations that fill streets and voidships with throngs of faithful. Whether they are united in hymn, in penitent flagellation, or blazing the trail of a witch hunt is up to the GM.';
+    effect =
+        'Increase the DN of all Endeavour-related Skill Tests by 2 due to these disruptions. If you belong to the Adepta Sororitas or Adeptus Ministorum you find yourself swept up in these events and lose one Endeavour. If you have any Faith Talents, the first Faith Talent you use in your next adventure costs no Faith points.';
+  } else if (rolled <= 41 && rolled <= 42) {
+    title = 'Labors Lost';
+    descr =
+        'Be it through mass deaths in an industrial accident, the collapse of a colossal worker’s hab unit, or an aggressive recruitment drive by the penal legions of the Astra Militarum, there are simply less laborers to fulfill the needs of the Imperium.';
+    effect =
+        'Due to reduced personnel, all Skill Tests as part of an Endeavour suffer a +1 DN penalty. If you choose to make a Simple Test on an Endeavour, you roll 2d6 and use the lowest result.';
+  } else if (rolled <= 42 && rolled <= 43) {
+    title = 'Psychic Awakening';
+    descr =
+        'The Empyrean churns with the cackling of primordial powers that seek to break their way into the Materium. Thousands of mortals cry out in pain as the Warp infects their souls.';
+    effect =
+        'If you are travelling in a voidship, you cannot attempt an Endeavour due to the empyric disturbances. If you are a psyker, you must perform the Puritanical Conditioning Endeavour, otherwise you must manifest all your psychic powers in the next adventure at the Transcendent level. The GM may decide that a number of NPCs become psykers due to Warp exposure, and allow players to hunt them down using the Toil Endeavour.';
+  } else if (rolled <= 44 && rolled <= 46) {
+    title = 'Rampant Illness';
+    descr =
+        'Sickness has overrun whatever place you find yourself in. The masses are plagued by this affliction, making accessing resources difficult.';
+    effect =
+        'You must make a DN 1 Toughness Test to resist the sickness, otherwise you lose one Endeavour whilst recovering. The DN of all Endeavour Skill Tests increases by 3 due to the spreading sickness, and the rolled result of any Simple Test is reduced by 2. You can counteract these effects by succeeding at a DN 5 Medicae (Int) Test, with success earning you 1 Influence for your noble actions.';
+  } else if (rolled <= 51 && rolled <= 52) {
+    title = 'Arguing Allies';
+    descr =
+        'Though unrelated to your current activities, two of your acquaintances have had a falling out. The GM decides which two NPCs (possibly important to your ongoing adventures, potentially even your Patrons!) have come to dislike one another.';
+    effect =
+        'You can choose to forgo your Endeavour to attempt a DN 5 Deception (Fel) or Persuasion (Fel) Skill Test to repair the relationship. If you decide not to do this or fail in the attempt, then the relationship falls apart entirely and the ramifications are left up to the GM.';
+  } else if (rolled <= 53 && rolled <= 54) {
+    title = 'Unexpected Rage';
+    descr =
+        'Blood boils, aggression rages, and tensions run high. Whether through the malign influence of the Blood God seeping through the Warp, or the simple stress of everyday life in the harsh Imperium, you feel yourself become agitated and irritable.';
+    effect =
+        'You can calm this rage by performing either the Hone Skill or Toil Endeavour using a Skill based on Strength, Toughness, Agility or Initiative. If you do not complete either of these Endeavours, the GM may spend 1 Ruin to cause you to become Frenzied whenever you roll a Complication in your next adventure.';
+  } else if (rolled <= 55 && rolled <= 56) {
+    title = 'Beset On All Sides';
+    descr =
+        'The myriad enemies of the Humanity strike jealously at the mighty Imperium; raiding Orks or Aeldari attack outposts and undefended voidships, while cults devoted to Chaos or Genestealer masters emerge from the shadowy corners of hive cities.';
+    effect =
+        'Your GM will decide what form this minor threat to the Imperium takes. You can choose to engage this threat head on, or ignore it entirely. u If you choose to engage, decide with the GM how you can assist in eliminating your enemies; this could involve simply fighting the threat, or could be researching, setting up a trap, or sniping a key enemy leader. u If you choose to ignore this call to action, you lose 1 Influence, but gain an additional Endeavour as other Imperials scramble to rebuff the threat. ';
+  } else if (rolled <= 61 && rolled <= 62) {
+    title = 'Thieving Scum!';
+    descr = 'Something has been stolen from you! ';
+    effect =
+        'You may choose to lose 1 Wealth, 1 Ammo, or a random piece of Wargear. You can use the Discovery Endeavour to make a DN 3 Cunning (Fel) or Investigation (Int) Test to find the thief and confront them.';
+  } else if (rolled <= 63 && rolled <= 64) {
+    title = 'The Emperor Protects';
+    descr =
+        'He who sits resplendent on the Golden Throne has seen your exploits even through the darkness of the Great Rift, and has judged you a worthy servant of His will.';
+    effect =
+        'If you choose a Simple Test on an Endeavour, you count as having rolled a Wrath Critical. If you choose a Skill Test you can re-roll it as though you had spent a Wrath Die.';
+  }
+
+  final embed = EmbedBuilder()
+    ..color = color
+    ..addAuthor((author) {
+      author.name = event.interaction.userAuthor!.username;
+      author.iconUrl = event.interaction.userAuthor!.avatarURL();
+      author.url = 'https://github.com/mediamagnet/Machine-Spirit';
+    })
+    ..addFooter((footer) {
+      footer.text = 'Machine Spirit v 1.6.0 - Voidblade ';
+    })
+    ..thumbnailUrl = event.interaction.userAuthor!.avatarURL()
+    ..addField(name: 'Title:', content: title, inline: false)
+    ..addField(name: 'Description:', content: descr, inline: false)
+    ..addField(name: 'Effect', content: effect, inline: false);
+
+  await event.respond(MessageBuilder.embed(embed));
+}
+
 Future<void> warpSlashCommand(ISlashCommandInteractionEvent event) async {
   final d20 = D20();
 
@@ -341,11 +479,11 @@ Future<void> aldariSlashCommand(ISlashCommandInteractionEvent event) async {
   var warp;
   var argContent = event.interaction.getArg('extra');
   print(argContent);
-  
+
   var roll1 = d20.rollWithStatistics('1d6');
   var roll2 = d20.rollWithStatistics('1d6');
 
-  if (roll1.finalResult < roll2.finalResult) {
+  if (roll1.finalResult > roll2.finalResult) {
     rolled = 0;
     var rolllist = [roll1.finalResult, roll2.finalResult];
     var s = '';
